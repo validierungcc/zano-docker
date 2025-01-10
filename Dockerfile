@@ -2,8 +2,11 @@ FROM ubuntu:22.04 AS builder
 
 RUN apt-get update && apt-get install -y git curl cmake make autoconf pkg-config automake g++ libtool libssl-dev libminiupnpc-dev libevent-dev
 
-RUN git clone https://github.com/hyle-team/zano.git /zano/zano
-RUN cd /zano/zano && git submodule update --init --recursive
+WORKDIR /zano
+
+RUN git clone https://github.com/hyle-team/zano.git zano && \
+    cd zano && \
+    git submodule update --init --recursive
 
 WORKDIR /zano/zano
 RUN curl -OL https://archives.boost.io/release/1.84.0/source/boost_1_84_0.tar.bz2
@@ -15,7 +18,7 @@ RUN ./b2 install --prefix=/zano/zano/boost_1_84_0/install
 
 WORKDIR /zano/zano
 RUN git checkout tags/2.0.1.367
-RUN mkdir build
+
 WORKDIR /zano/zano/build
 RUN cmake \
     -DBOOST_ROOT=/zano/zano/boost_1_84_0/install \
