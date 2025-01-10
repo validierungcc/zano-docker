@@ -1,6 +1,6 @@
 **Zano**
 
-https://github.com/validierungcc/eMark-docker
+https://github.com/validierungcc/zano-docker
 
 https://www.zano.org/
 
@@ -23,4 +23,4 @@ minimal example compose.yml
 
 **RPC Access**
 
-    curl --user 'zanorpc:<password>' --data-binary '{"jsonrpc":"2.0","id":"curltext","method":"getinfo","params":[]}' -H "Content-Type: application/json" http://127.0.0.1:4444
+    curl -s -X POST "http://127.0.0.1:11211/json_rpc" -H "Content-Type: application/json" -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"getinfo\"}"
