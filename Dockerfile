@@ -26,19 +26,21 @@ RUN cmake \
 
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y pkg-config libtool libssl-dev libevent-dev
-RUN addgroup --gid 1000 zano
-RUN adduser --disabled-password --gecos "" --home /zano --ingroup zano --uid 1000 zano
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libssl-dev libminiupnpc-dev libevent-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN addgroup --gid 1000 zano && \
+    adduser --disabled-password --gecos "" --home /zano --ingroup zano --uid 1000 zano
 
 USER zano
-COPY --from=builder /zano /zano
-COPY ./entrypoint.sh /
 
-RUN mkdir /zano/.Zano
+COPY --from=builder /zano /zano
+
+COPY entrypoint.sh /entrypoint.sh
+RUN mkdir -p /zano/.Zano
+
 VOLUME /zano/.Zano
+EXPOSE 11121/tcp 11211/tcp
 ENTRYPOINT ["/entrypoint.sh"]
-# P2P
-EXPOSE 11121/tcp
-# RPC
-EXPOSE 11211/tcp
 
