@@ -1,8 +1,6 @@
 FROM ubuntu:22.04 AS builder
 
-RUN apt-get update && apt-get install -y git curl cmake make wget autoconf pkg-config automake g++ libtool libdb-dev libdb++-dev libboost-all-dev libssl-dev libminiupnpc-dev libevent-dev
-RUN addgroup --gid 1000 zano
-RUN adduser --disabled-password --gecos "" --home /zano --ingroup zano --uid 1000 zano
+RUN apt-get update && apt-get install -y git curl cmake make autoconf pkg-config automake g++ libtool libssl-dev libminiupnpc-dev libevent-dev
 
 RUN git clone https://github.com/hyle-team/zano.git /zano/zano
 RUN cd /zano/zano && git submodule update --init --recursive
@@ -28,7 +26,7 @@ RUN cmake \
 
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y git make autoconf pkg-config automake g++ libtool libdb-dev libdb++-dev libboost-all-dev libssl-dev libevent-dev
+RUN apt-get update && apt-get install -y pkg-config libtool libssl-dev libevent-dev
 RUN addgroup --gid 1000 zano
 RUN adduser --disabled-password --gecos "" --home /zano --ingroup zano --uid 1000 zano
 
